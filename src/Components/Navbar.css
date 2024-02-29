@@ -1,0 +1,45 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #F5EC4F;
+    padding: 25px 20px;
+  }
+  
+  .navbar-left {
+    display: flex;
+    align-items: center;
+  }
+  
+  .logo {
+    width: 4vw; /* Adjust as per your logo size */
+    height: 40px; /* Adjust as per your logo size */
+    margin-right: 0.5vw;
+  }
+  
+  .brand {
+    font-size: 20px;
+    font-weight: bold;
+    color: #4542CE;
+  }
+  
+  .navbar-right .btn {
+    padding: 8px 16px;
+    margin-left: 10px;
+    border: none;
+    height: 50px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #4542CE;
+    color: white;
+  }
+  
+  .navbar-right .btn:hover {
+    background-color: #2e2c8a;
+  }
+  @media (max-width: 376px) {
+    .navbar-right .btn {
+      margin-left: 5px; /* Adjust margin for smaller screens */
+    }
+  }
