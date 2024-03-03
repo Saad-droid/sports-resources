@@ -3,8 +3,13 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import './Carosuel.css';
 import React from 'react';
+import { useNavigate } from 'react-router-dom'; 
+import { useState } from "react";
+import CommonForm from "./CommonForm";
 
 const Carosuel = () => {
+  const [selectedSport, setSelectedSport] = useState(null);
+  const navigate = useNavigate(); 
   const settings = {
     dots: true,
     infinite: true,
@@ -41,6 +46,8 @@ const Carosuel = () => {
   };
   const handleClick=(sports)=>{
     console.log("sports",sports)
+    setSelectedSport(sports);
+    navigate(`/form/${sports}`); 
   }
   
   return (
@@ -61,6 +68,7 @@ const Carosuel = () => {
           ))}
         </Slider>
       </div>
+      {selectedSport && <CommonForm selectedSport={selectedSport} />}
     </div>
   )
 }

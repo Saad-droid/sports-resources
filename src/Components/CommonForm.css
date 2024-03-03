@@ -1,0 +1,103 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+    padding: 3.125em;
+    border-radius: 10px;
+    text-align: center;
+    width: 25%;
+    margin-left: auto; 
+    margin-right: auto; 
+    box-shadow: 5px 5px 15px -1px rgba(0, 0, 0, 0.75);
+  }
+  .signup {
+    color: rgb(77, 75, 75);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    display: block;
+    font-weight: bold;
+    font-size: x-large;
+    margin-bottom: 0.5em;
+  }
+
+  input, select {
+    width: 200px; /* Set a specific width */
+    max-width: 50%; /* Set max-width to 100% */
+    height: 44px;
+    background-color: #05060f0a;
+    border-radius: .5rem;
+    margin-bottom: 0.5vh;
+    padding: 0 1rem;
+    border: 2px solid transparent;
+    font-size: 1rem;
+    transition: border-color .3s cubic-bezier(.25,.01,.25,1) 0s, color .3s cubic-bezier(.25,.01,.25,1) 0s, background .2s cubic-bezier(.25,.01,.25,1) 0s;
+}
+  
+  /* .form-group {
+    width: auto;
+    margin-bottom: 1.25em;
+  } */
+  
+  .form-group label {
+    color: rgb(77, 75, 75);
+    margin-bottom: 0.5em;
+  }
+  .error {
+    color: red;
+  }
+  .form--input{
+    width: 10vw;
+    padding: 0.8em;
+    border-radius: 5px;
+    border: 1px solid gray;
+    margin-left: 2vw;
+    margin-bottom: 2vh;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+  }
+.lbl{
+    text-align: center;
+    font-weight: bold;
+}
+
+  /* .form-group input {
+    width: auto;
+    padding: 0.8em;
+    border-radius: 5px;
+    border: 1px solid gray;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    
+  } */
+  input:hover, .input:focus, .input-group:hover .input {
+    outline: none;
+    border-color: #05060f;
+  } 
+  
+  input-group:hover .label, .input:focus {
+    color: #05060fc2;
+  }
+ 
+  
+  .form--submit {
+    width: auto;
+    padding: 0.625em 2em;
+    border-radius: 5px;
+    color: white;
+    background-color: rgba(102, 51, 153, 0.697);
+    border: 1px dashed #639;
+    cursor: pointer;
+  }
+  
+  .form--submit:hover {
+    background-color:rgb(112, 43, 180);
+    cursor: pointer;
+    transition: 0.5s;
+  }
+  @media only screen and (min-width: 768px) {
+    input, select {
+        max-width: 50%; /* Adjust max-width as needed */
+    }
+}
