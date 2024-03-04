@@ -9,13 +9,14 @@ const CommonForm = () => {
         teamName: "",
         captainName: "",
         captainSapId: "",
+        gender: "",
         teamMembers: sport === "chess" || sport === "tabletennis" || sport === "tennis" ? '' : [
-            { name: "", sapId: "" },
-            { name: "", sapId: "" },
-            { name: "", sapId: "" },
-            { name: "", sapId: "" }
+            { name: "", sapId: "", gender: "" },
+            { name: "", sapId: "", gender: "" },
+            { name: "", sapId: "", gender: "" },
+            { name: "", sapId: "", gender: "" }
         ],
-        location:"",
+        location: "",
     });
 
     const [errors, setErrors] = useState({})
@@ -26,17 +27,13 @@ const CommonForm = () => {
 
         try {
             await validationSchema.validate(formData, { abortEarly: false });
-          const  finalvalue={...formData, sport}
+            const finalvalue = { ...formData, sport }
             console.log("Form Submitted", finalvalue);
         } catch (error) {
             const newErrors = {};
 
             error.inner.forEach((err) => {
-                if (err.path === "teamMembers" && formData.teamMembers.length === 1) {
-                    newErrors.teamMembers = err.message;
-                } else {
-                    newErrors[err.path] = err.message;
-                }
+                newErrors[err.path] = err.message;
             });
 
             setErrors(newErrors);
@@ -56,7 +53,7 @@ const CommonForm = () => {
             .max(99999999, "Captain SAP ID must be an 8-digit number")
             .required("Captain SAP ID is required"),
         teamMembers: sport === "chess" || sport === "tabletennis" || sport === "tennis"
-            ? Yup.string().required('At least one team member is required')
+            ? Yup.string().optional('At least one team member is required')
             : Yup.array().of(
                 Yup.object().shape({
                     name: Yup.string().required("Team member name is required"),
@@ -67,15 +64,28 @@ const CommonForm = () => {
                         .min(10000000, "SAP ID must be an 8-digit number")
                         .max(99999999, "SAP ID must be an 8-digit number")
                         .required("SAP ID is required"),
+                    gender: Yup.string().required("Gender is required"),
                 })
             ),
-        location: Yup.string().required("Location is required")
+        location: Yup.string().required("Location is required"),
+        gender:Yup.string().required("Gender is Required ")
+
     };
 
-    // if (!(sport === "chess" || sport === "tabletennis" || sport === "tennis")) {
-    //     commonSchema.teamLeader = Yup.string().required("Team leader is required")
-    // }
-    const validationSchema = Yup.object().shape(commonSchema);
+    let validationSchema;
+
+    if (!(sport === "chess" || sport === "tabletennis" || sport === "tennis")) {
+        commonSchema.teamMembers = commonSchema.teamMembers.test({
+            test: function (value) {
+                const atLeastOneFemale = value.some(member => member.gender === 'female');
+                return atLeastOneFemale;
+            },
+            message: 'At least one team member must be female',
+        });
+    }
+
+    validationSchema = Yup.object().shape(commonSchema);
+
 
 
     const handleChange = (event) => {
@@ -97,6 +107,17 @@ const CommonForm = () => {
             teamMembers: updatedTeamMembers,
         });
     };
+    const handleTeamMemberGenderChange = (event, index) => {
+        const { value } = event.target;
+        const updatedTeamMembers = [...formData.teamMembers];
+        updatedTeamMembers[index].gender = value;
+        setFormData({
+            ...formData,
+            teamMembers: updatedTeamMembers,
+        });
+        console.log(formData);
+    };
+
 
     const handleTeamMemberSapIdChange = (event, index) => {
         const { value } = event.target;
@@ -107,14 +128,14 @@ const CommonForm = () => {
             teamMembers: updatedTeamMembers,
         });
     };
-     function sportValue(){
-        if(sport === "chess" || sport === "tabletennis" || sport === "tennis"){
+    function sportValue() {
+        if (sport === "chess" || sport === "tabletennis" || sport === "tennis") {
             return true;
         }
-        else{
+        else {
             return false;
         }
-     }
+    }
 
     return (
         <div>
@@ -141,28 +162,76 @@ const CommonForm = () => {
                     <input type='number' value={formData.captainSapId} onChange={handleChange} name='captainSapId' placeholder='Captain SAP ID' />
                     {errors.captainSapId && <div className="error">{errors.captainSapId}</div>}
                 </div>
+                {sportValue() && (
+                    <div className="-group">
+                        <label className='lbl'>Gender:</label>
+                        <div className="mydict">
+                            <label>
+                                <input type="radio" value="male" name="gender" checked={formData.gender === "male"} onChange={handleChange} />
+                                <span className='gender' >Male</span>
+                            </label>
+                            <label>
+                                <input type="radio" value="female" name="gender" checked={formData.gender === "female"} onChange={handleChange} />
+                                <span className='gender' >Female</span>
+                            </label>
+                            <label>
+                                <input type="radio" value="other" name="gender" checked={formData.gender === "other"} onChange={handleChange} />
+                                <span className='gender' >Other</span>
+                            </label>
+                        </div>
+                        {errors && errors.gender && <div className="error">{errors.gender}</div>}
+                    </div>
+                )}
+
                 <div className="form-group">
-                    <label className='lbl'>Team Members:</label>
+                   
                     {sport === "chess" || sport === "tabletennis" || sport === "tennis" ? (
                         <div>
-                            <input
+                            {/* <input
                                 type="text"
                                 name='teamMembers'
                                 value={formData.teamMembers}
                                 placeholder='Your Name'
                                 onChange={handleChange}
                             />
-                            {errors.teamMembers && <div className="error">{errors.teamMembers}</div>}
+                            {errors.teamMembers && <div className="error">{errors.teamMembers}</div>} */}
                         </div>
+
 
                     ) : (
 
                         formData?.teamMembers?.map((member, index) => (
                             <div key={index}>
+                                 <label className='lbl'>Team Members:</label>
                                 <input type='text' value={member.name} onChange={(e) => handleTeamMemberNameChange(e, index)} name={`teamMembers[${index}].name`} placeholder={`Team Member ${index + 1} Name`} />
                                 {errors && errors[`teamMembers[${index}].name`] && <div className="error">{errors[`teamMembers[${index}].name`]}</div>}
                                 <input type='number' value={member.sapId} onChange={(e) => handleTeamMemberSapIdChange(e, index)} name={`teamMembers[${index}].sapId`} placeholder={`Team SapID ${index + 1} SAP ID`} />
                                 {errors && errors[`teamMembers[${index}].sapId`] && <div className="error">{errors[`teamMembers[${index}].sapId`]}</div>}
+                                <div className="mydict">
+                                    <div>
+                                        <label>
+
+                                            <input type="radio" value="male" name={`teamMembers[${index}].gender`} checked={member.gender === "male"} onChange={(e) => handleTeamMemberGenderChange(e, index)} />
+                                            <span className='gender' >Male</span>
+
+                                        </label>
+
+                                        <label>
+                                            <input type="radio" value="female" name={`teamMembers[${index}].gender`} checked={member.gender === "female"} onChange={(e) => handleTeamMemberGenderChange(e, index)} />
+                                            <span className='gender' >Female</span>
+                                        </label>
+                                        <label>
+
+                                            <input type="radio" value="other" name={`teamMembers[${index}].gender`} checked={member.gender === "other"} onChange={(e) => handleTeamMemberGenderChange(e, index)} />
+                                            <span className='gender' >other</span>
+                                        </label>
+                                        {errors && errors[`teamMembers[${index}].gender`] && <div className="error">{errors[`teamMembers[${index}].gender`]}</div>}
+                                    </div>
+                                    {errors && errors.teamMembers && errors.teamMembers[index] && errors.teamMembers[index].gender && (
+                                        <div className="error">{errors.teamMembers[index].gender}</div>
+                                    )}
+                                </div>
+                                <hr />
                             </div>
                         ))
 
@@ -182,8 +251,8 @@ const CommonForm = () => {
 
                 </div>
                 <button className="form--submit" type="submit">Submit</button>
-            </form>
-        </div>
+            </form >
+        </div >
     );
 };
 
