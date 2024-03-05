@@ -153,3 +153,8 @@
         max-width: 50%; /* Adjust max-width as needed */
     }
 }
+@media (max-width: 578px) {
+   .form{
+    width: 40%;
+   }
+}
