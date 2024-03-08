@@ -5,6 +5,7 @@ import './CommonForm.css'
 import * as Yup from "yup"
 const CommonForm = () => {
     const { sport } = useParams();
+    const[ memberDetails, SetmemberDetails]=useState(false)
     const [formData, setFormData] = useState({
         teamName: "",
         captainName: "",
@@ -23,6 +24,11 @@ const CommonForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log("Errors:", errors);
+        if (!memberDetails) {
+            // Set error for team member details
+            setErrors({ teamMembers: "Team member details are mandatory" });
+            return; // Prevent form submission
+        }
 
 
         try {
@@ -46,13 +52,6 @@ const CommonForm = () => {
 
         teamName: Yup.string().required("Team name is required"),
         captainName: Yup.string().required("Captain name is required"),
-        // captainSapId: Yup.number()
-        //     .typeError("Captain SAP ID must be a number")
-        //     .positive("Captain SAP ID must be a positive number")
-        //     .integer("Captain SAP ID must be an integer")
-        //     .min(10000000, "Captain SAP ID must be an 8-digit number")
-        //     .max(99999999, "Captain SAP ID must be an 8-digit number")
-        //     .required("Captain SAP ID is required"),
         capgender: Yup.string().required("Captain-Gender is required"),
         teamMembers: Yup.array().of(
             Yup.object().shape({
@@ -134,23 +133,28 @@ validationSchema = Yup.object().shape(commonSchema);
             return false;
         }
     }
+    const handleTeamDetails=()=>{
+        SetmemberDetails(!memberDetails)
+        setErrors({})
+      
+    }
 
     return (
         <div>
 
-            <form className="form" onSubmit={handleSubmit}>
+            <form className="form1" onSubmit={handleSubmit}>
                 <h1 className="signup">{sport}</h1>
                 <div className="form-group">
                     <label className='lbl'>Team Name:</label>
                     <br />
-                    <input type='text' value={formData.teamName} onChange={handleChange} name='teamName' placeholder='Team Name' />
+                    <input type='text' value={formData.teamName} onChange={handleChange} name='teamName' placeholder='Team Name' className='Sport-input' />
                     {errors.teamName && <div className="error">{errors.teamName}</div>}
                 </div>
 
                 <div className="form-group">
                     <label className='lbl'>Captain Name:</label>
                     <br />
-                    <input type='text' value={formData.captainName} onChange={handleChange} name='captainName' placeholder='Captain Name' />
+                    <input type='text' value={formData.captainName} onChange={handleChange} name='captainName' placeholder='Captain Name'  className='Sport-input'/>
                     {errors.captainName && <div className="error">{errors.captainName}</div>}
                 </div>
 
@@ -161,8 +165,8 @@ validationSchema = Yup.object().shape(commonSchema);
                     {errors.captainSapId && <div className="error">{errors.captainSapId}</div>}
                 </div> */}
                 <div className="mydict">
-                    <div>
-                    <label className='lbl'>Captain Gender:</label>
+                    <div className='form-group'>
+                    <label className='lbl'>Captain's Gender:</label>
                     </div>
                     <div>
                         <label>
@@ -170,49 +174,48 @@ validationSchema = Yup.object().shape(commonSchema);
                             <span className='gender' >Male</span>
                         </label>
                         <label>
-                            <input type="radio" value="female" name="capgender" checked={formData.capgender === "female"} onChange={handleChange} />
+                            <input type="radio" value="female" name="capgender" checked={formData.capgender === "female"} onChange={handleChange}  />
                             <span className='gender' >Female</span>
                         </label>
                         <label>
                             <input type="radio" value="other" name="capgender" checked={formData.capgender === "other"} onChange={handleChange} />
                             <span className='gender' >other</span>
+                           
                         </label>
-                        {errors && errors.capgender && <div className="error">{errors.capgender}</div>}
+                      
                     </div>
-                </div>
-                {/* {sportValue() && (
-                    <div className="-group">
-                        <label className='lbl'>Gender:</label>
-                        <div className="mydict">
-                            <label>
-                                <input type="radio" value="male" name="gender" checked={formData.gender === "male"} onChange={handleChange} />
-                                <span className='gender' >Male</span>
-                            </label>
-                            <label>
-                                <input type="radio" value="female" name="gender" checked={formData.gender === "female"} onChange={handleChange} />
-                                <span className='gender' >Female</span>
-                            </label>
-                            <label>
-                                <input type="radio" value="other" name="gender" checked={formData.gender === "other"} onChange={handleChange} />
-                                <span className='gender' >Other</span>
-                            </label>
-                        </div>
-                        {errors && errors.gender && <div className="error">{errors.gender}</div>}
-                    </div>
-                )} */}
+                    {errors && errors.capgender && <div className="error">{errors.capgender}</div>}
 
-                <div className="form-group">
+                </div>
+                <br/>
+                <div className='form-group'>
+                <label className='lbl'>Team Details:</label>
+                <br/>
+                <label className="switch">
+                <input  type='checkbox' onClick={handleTeamDetails}/>
+                </label>
+                </div>
+                
+              
+                {errors && errors.teamMembers && <div className="error">{errors.teamMembers}</div>}
+                {memberDetails &&  <><div className="form-group">
+               
+                <label className='lbl'>Team Members:</label>
+                </div>
+                <div className="team-members-grid">
+                
                     {formData?.teamMembers?.map((member, index) => (
-                        <div key={index}>
-                            <label className='lbl'>Team Members:</label>
+                        <div key={index} className='team-member'>
+                           
                             <br/>
-                            <input type='text' value={member.name} onChange={(e) => handleTeamMemberNameChange(e, index)} name={`teamMembers[${index}].name`} placeholder={`Team Member ${index + 1}`} />
+                            <input type='text' value={member.name} onChange={(e) => handleTeamMemberNameChange(e, index)} name={`teamMembers[${index}].name`} placeholder={"Name"} className='Sport-input'/>
                             {errors && errors[`teamMembers[${index}].name`] && <div className="error">{errors[`teamMembers[${index}].name`]}</div>}
-                            <input type='number' value={member.sapId} onChange={(e) => handleTeamMemberSapIdChange(e, index)} name={`teamMembers[${index}].sapId`} placeholder={`Team SapID ${index + 1}`} />
+                            <input type='number' value={member.sapId} onChange={(e) => handleTeamMemberSapIdChange(e, index)} name={`teamMembers[${index}].sapId`} placeholder={'sapId'} className='Sport-input'/>
                             {errors && errors[`teamMembers[${index}].sapId`] && <div className="error">{errors[`teamMembers[${index}].sapId`]}</div>}
+                            
                             <div className="mydict">
-                                <label className='lbl'> Team Member's Gender:</label>
-                                <div>
+                                {/* <label className='lbl'> Team Member's Gender:</label> */}
+                                <div className='form-group'>
                                     <label>
                                         <input type="radio" value="male" name={`teamMembers[${index}].gender`} checked={member.gender === "male"} onChange={(e) => handleTeamMemberGenderChange(e, index)} />
                                         <span className='gender' >Male</span>
@@ -230,18 +233,22 @@ validationSchema = Yup.object().shape(commonSchema);
                                     {errors && errors[`teamMembers[${index}].gender`] && <div className="error">{errors[`teamMembers[${index}].gender`]}</div>}
                                 </div>
                             </div>
-                            <hr />
+                          
                         </div>
                     ))}
                     {/* Display the error message for team members */}
-                    {errors && errors.teamMembers && typeof errors.teamMembers === 'string' && (
-                        <div className="error">{errors.teamMembers}</div>
-                    )}
-                </div>
+                    {/* {errors && errors.teamMembers && typeof errors.teamMembers === 'string' && (
+                       
+                        <div className="error1">{errors.teamMembers}</div>
+                        
+                    )} */}
+                </div> 
+                </> }
+                
                 <div>
                         <label className='lbl'>Location:</label>
                         <br />
-                        <select name="location" value={formData.location} onChange={handleChange}>
+                        <select name="location" value={formData.location} onChange={handleChange} className='Sport-input'>
                             <option value="">Select</option>
                             <option value="Noida 126">Noida 126</option>
                             <option value="Bengaluru-Jini 2">Bengaluru-Jini 2</option>

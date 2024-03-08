@@ -1,13 +1,15 @@
-.form {
+
+.form1{
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     background-color: #ffffff;
-    padding: 3.125em;
+    padding: 1.125em;
     border-radius: 10px;
     text-align: center;
-    width: 25%;
+    width: 29%;
+    margin-top: 15vh;
     margin-left: auto; 
     margin-right: auto; 
     box-shadow: 5px 5px 15px -1px rgba(0, 0, 0, 0.75);
@@ -22,7 +24,7 @@
     margin-bottom: 0.5em;
   }
 
-  input, select {
+  .Sport-input{
     width: 200px; /* Set a specific width */
     max-width: 50%; /* Set max-width to 100% */
     height: 44px;
@@ -34,11 +36,7 @@
     font-size: 1rem;
     transition: border-color .3s cubic-bezier(.25,.01,.25,1) 0s, color .3s cubic-bezier(.25,.01,.25,1) 0s, background .2s cubic-bezier(.25,.01,.25,1) 0s;
 }
-  
-  /* .form-group {
-    width: auto;
-    margin-bottom: 1.25em;
-  } */
+
   
   .form-group label {
     color: rgb(77, 75, 75);
@@ -47,6 +45,11 @@
   .error {
     color: red;
   }
+  .error1 {
+    color: red;
+  margin-left: 20%; 
+  }
+  
   .form--input{
     width: 10vw;
     padding: 0.8em;
@@ -62,15 +65,7 @@
     font-weight: bold;
 }
 
-  /* .form-group input {
-    width: auto;
-    padding: 0.8em;
-    border-radius: 5px;
-    border: 1px solid gray;
-    font-family: 'Inter', sans-serif;
-    outline: none;
-    
-  } */
+
   input:hover, .input:focus, .input-group:hover .input {
     outline: none;
     border-color: #05060f;
@@ -86,13 +81,13 @@
     padding: 0.625em 2em;
     border-radius: 5px;
     color: white;
-    background-color: rgba(102, 51, 153, 0.697);
+    background-color: rgba(16, 16, 16, 0.997);
     border: 1px dashed #639;
     cursor: pointer;
   }
   
   .form--submit:hover {
-    background-color:rgb(112, 43, 180);
+    background-color:rgba(26, 26, 27, 0.852);
     cursor: pointer;
     transition: 0.5s;
   }
@@ -144,17 +139,77 @@
   label:first-child span {
     border-radius: .375em 0 0 .375em;
   }
+  .team-members-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
   
+  .team-member {
+    width: 100%;
+  }
   label:last-child span {
     border-radius: 0 .375em .375em 0;
   }
+  
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.switch {
+    --false: #E81B1B;
+    --true: #009068;
+   }
+   
+   input[type=checkbox] {
+    appearance: none;
+    height: 2rem;
+    width: 6.5rem;
+    background-color: #111111;
+    position: relative;
+    border-radius: .2em;
+    cursor: pointer;
+   }
+   
+   input[type=checkbox]::before {
+    content: '';
+    display: block;
+    height: 1.9em;
+    width: 1.9em;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    top: 50%;
+    left: calc(1.9em/2 + .3em);
+    background-color: var(--false);
+    border-radius: .2em;
+    transition: .3s ease;
+   }
+   
+   input[type=checkbox]:checked::before {
+    background-color: var(--true);
+    left: calc(100% - (1.9em/2 + .3em));
+   }
   @media only screen and (min-width: 768px) {
     input, select {
         max-width: 50%; /* Adjust max-width as needed */
     }
+    .team-member {
+        width: calc(50% - 0.5rem); /* Each team member takes up 50% width with a gap */
+      }
+    
 }
+
+
 @media (max-width: 578px) {
-   .form{
-    width: 40%;
+   .form1{
+    width: 50%;
    }
+   .error1{
+    margin: auto;
+   }
+   input[type=checkbox] {
+    width: 3.5rem;
+}
 }

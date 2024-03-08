@@ -8,10 +8,7 @@ import { useState } from "react";
 import CommonForm from "./CommonForm";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { ToastContainer } from "react-toastify";
- 
 
-toast.configure();
 
 const Carosuel = () => {
   const [selectedSport, setSelectedSport] = useState(null);
@@ -55,7 +52,7 @@ const Carosuel = () => {
     if (sports === "chess" || sports === "tabletennis" || sports === "tennis") {
 
       console.log("Logging sport:", sports);
-      toast("Hello Geeks");
+      
     } else {
       // Navigate to form for other sports
       setSelectedSport(sports);
@@ -82,7 +79,7 @@ const Carosuel = () => {
         </Slider>
       </div>
       {selectedSport && <CommonForm selectedSport={selectedSport} />}
-      <ToastContainer/>
+     
     </div>
   )
 }
