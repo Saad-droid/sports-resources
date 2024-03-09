@@ -140,7 +140,8 @@ validationSchema = Yup.object().shape(commonSchema);
     }
 
     return (
-        <div>
+        <div className="card">
+            <div className="card2">
 
             <form className="form1" onSubmit={handleSubmit}>
                 <h1 className="signup">{sport}</h1>
@@ -263,6 +264,7 @@ validationSchema = Yup.object().shape(commonSchema);
                 <button className="form--submit" type="submit">Submit</button>
             </form >
         </div >
+        </div>
     );
 };
 
