@@ -6,6 +6,7 @@ import * as Yup from "yup"
 const CommonForm = () => {
     const { sport } = useParams();
     const[ memberDetails, SetmemberDetails]=useState(false)
+    const[modal, setModal]=useState(false)
     const [formData, setFormData] = useState({
         teamName: "",
         captainName: "",
@@ -138,6 +139,9 @@ validationSchema = Yup.object().shape(commonSchema);
         setErrors({})
       
     }
+    const handleModal=()=>{
+        setModal(!modal)
+    }
 
     return (
         <div className="card">
@@ -262,8 +266,21 @@ validationSchema = Yup.object().shape(commonSchema);
                 
 
                 <button className="form--submit" type="submit">Submit</button>
+                <a onClick={handleModal} >t&C</a>
             </form >
         </div >
+      
+        {modal && (
+        <div className="modal-container">
+          <div className="modal-content">
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus commodi id voluptate quod eius minus, nemo odit doloribus cumque corporis quasi maxime, accusantium facilis exercitationem natus dicta aut asperiores consectetur!</p>
+            
+            <button onClick={handleModal} className="modal-btn">
+              X
+            </button>
+          </div>
+        </div>
+      )}
         </div>
     );
 };
